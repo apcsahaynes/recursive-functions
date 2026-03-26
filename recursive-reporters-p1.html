@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursive Methods — Page 1</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+    :root {
+      --bg: #fafaf8;
+      --text: #1a1a1a;
+      --muted: #555;
+      --border: #ddd;
+      --green-bg: #f0f7f0;
+      --green-border: #4a9e4a;
+      --yellow-bg: #fffbea;
+      --yellow-border: #d4a017;
+      --blue-bg: #f0f4ff;
+      --blue-border: #4a6fa5;
+      --code-bg: #f4f4f0;
+      --accent: #2d6a2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      padding: 0 1rem;
+    }
+
+    .page {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 0 2rem;
+    }
+
+    .lab-header {
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .lab-header .breadcrumb {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .lab-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .lab-header .page-indicator {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .intro-box {
+      background: var(--green-bg);
+      border-left: 4px solid var(--green-border);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .intro-box p + p { margin-top: 0.4rem; }
+
+    p { margin-bottom: 1rem; }
+
+    .tree-figure {
+      float: right;
+      margin: 0 0 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .tree-figure img {
+      width: 180px;
+      display: block;
+    }
+
+    .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .exercises { margin: 1.5rem 0; }
+
+    .exercise {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      align-items: flex-start;
+    }
+
+    .exercise-num {
+      font-family: 'Source Code Pro', monospace;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      padding-top: 0.1rem;
+    }
+
+    .exercise-body { flex: 1; }
+    .exercise-body p:last-child { margin-bottom: 0; }
+
+    table {
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 1.4rem;
+      text-align: center;
+    }
+
+    th {
+      background: var(--code-bg);
+      font-weight: 600;
+    }
+
+    pre {
+      margin: 0.8rem 0;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      border: 1px solid var(--border);
+    }
+
+    pre code { font-family: 'Source Code Pro', monospace !important; }
+
+    code {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.1em 0.3em;
+      border-radius: 2px;
+    }
+
+    pre code {
+      background: none !important;
+      padding: 0 !important;
+    }
+
+    .thinking {
+      background: var(--yellow-bg);
+      border: 1px solid var(--yellow-border);
+      border-radius: 3px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .thinking h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #7a5800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: 'Source Code Pro', monospace;
+    }
+
+    .dialogue { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .dialogue-line { display: flex; gap: 0.6rem; }
+
+    .speaker {
+      font-weight: 600;
+      min-width: 5.5rem;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .speech { flex: 1; }
+
+    .callout {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue-border);
+      padding: 0.9rem 1.2rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* Prominent "not possible" — used on page 2 */
+    .not-possible {
+      border: 2px solid #c0392b;
+      border-radius: 4px;
+      padding: 0.5rem;
+      margin: 1rem 0;
+      position: relative;
+    }
+
+    .not-possible::before {
+      content: "✗  NOT POSSIBLE";
+      display: block;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #c0392b;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+    }
+
+    details {
+      margin: 0.8rem 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    summary {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      user-select: none;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶ '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼ '; }
+    details[open] { border-color: var(--green-border); }
+
+    .hint-body {
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.93rem;
+    }
+
+    .partner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #e8f0e8;
+      border: 1px solid var(--green-border);
+      border-radius: 20px;
+      padding: 0.15rem 0.7rem 0.15rem 0.5rem;
+      font-size: 0.82rem;
+      font-family: 'Source Code Pro', monospace;
+      color: var(--accent);
+      font-weight: 600;
+      margin-right: 0.3rem;
+      vertical-align: middle;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .nav-page {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .nav-btn {
+      display: inline-block;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: white;
+      background: var(--accent);
+      padding: 0.5rem 1.2rem;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <div class="breadcrumb">AP CS A &mdash; Recursion</div>
+    <h1>Recursive Methods That Return Values</h1>
+    <div class="page-indicator">Page 1 of 2 &mdash; Counting Trees</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>In this lab,</strong> you will develop recursive methods that return values.</p>
+    <p><strong>On this page,</strong> you will explore a method for counting the segments in a fractal tree, and re-build it recursively.</p>
+  </div>
+
+  <div class="clearfix">
+    <div class="tree-figure">
+      <img src="fractal-tree.png" alt="A fractal tree made up of line segments">
+    </div>
+    <p>In the last few days, you built recursive trees. Each tree is made up of line segments.</p>
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p>Open your tree sketch. How many line segments are in a tree of each level? Complete this table. You can count by eye or add a counter to your sketch.</p>
+        <table>
+          <tr><th>level</th><th>segment count</th></tr>
+          <tr><td>1</td><td>1</td></tr>
+          <tr><td>2</td><td>3</td></tr>
+          <tr><td>3</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+          <tr><td>4</td><td></td></tr>
+          <tr><td>5</td><td></td></tr>
+          <tr><td>6</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> How does the number of segments in one level compare to the number of segments in the previous level?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p>Write a method whose input is a tree level and whose output is the number of segments in a tree of that level. It should return 127 for level 7.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="thinking">
+    <h3>Thinking Out Loud</h3>
+    <p style="font-style:italic; margin-bottom:1rem; color:#555;">Morgan and Jasmine discuss the code they created.</p>
+    <div class="dialogue">
+      <div class="dialogue-line">
+        <span class="speaker">Morgan:</span>
+        <span class="speech">I noticed a pattern in the table. Each number of segments is one less than a power of 2.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Jasmine:</span>
+        <span class="speech">What does your code look like?</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Morgan:</span>
+        <span class="speech">I used a <code>for</code> loop to build the power of 2, then subtracted 1 at the end:</span>
+      </div>
+    </div>
+
+    <pre><code class="language-java">int segmentsInTree(int n) {
+  int answer = 1;
+  for (int i = 1; i &lt; n; i++) {
+    answer = answer * 2;
+  }
+  return answer - 1;
+}</code></pre>
+
+    <div class="dialogue">
+      <div class="dialogue-line">
+        <span class="speaker">Morgan:</span>
+        <span class="speech">At the end, the <code>return</code> statement sends the final value. I put the last math operation there.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Jasmine:</span>
+        <span class="speech">Wow. Mine looks a lot different! I made the code look like the code for <code>tree</code>.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Morgan:</span>
+        <span class="speech">Interesting... but I don't get it.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Jasmine:</span>
+        <span class="speech">Look back at the code for <code>tree</code>. We used recursion. We drew a segment, turned, called <code>tree</code> to draw a smaller tree, turned again, and then called <code>tree</code> again to draw another, smaller tree.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Morgan:</span>
+        <span class="speech">Cool! We can think about how that algorithm works to write <code>segmentsInTree</code> recursively. But we can ignore all the drawing and turning parts, right? Let me give this a shot.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Jasmine:</span>
+        <span class="speech">Right! And don't forget: <em>base cases are important!</em></span>
+      </div>
+    </div>
+  </div>
+
+  <p>You've built and worked with recursive <em>void</em> methods. Recursion can also be used in methods that return values.</p>
+
+  <div class="callout">
+    In Java, once a <code>return</code> statement executes, the method ends immediately. No further code runs after a <code>return</code>.
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p>If you haven't yet, write a recursive method that returns the number of segments in a tree of level <em>n</em>. Here's Jasmine's code:</p>
+        <pre><code class="language-java">int segmentsInTree(int n) {
+  if (n == 1) {
+    return 1;
+  } else {
+    return 1 + 2 * segmentsInTree(n - 1);
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> What is the base case condition? What does the program do in that case? Why is the base case necessary?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">6.</div>
+      <div class="exercise-body">
+        <p>The <code>tree</code> method had two recursive calls, but this code has only one. Why?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">7.</div>
+      <div class="exercise-body">
+        <p>You also built a triangle fractal. Write a method that returns the total number of triangles formed in a level <em>n</em> triangle fractal. It should return 121 for level 5.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">Re-read your triangle fractal code and use its structure to help you write this method. Make a table of levels vs triangle counts first — can you spot the pattern?</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">8.</div>
+      <div class="exercise-body">
+        <p>Save your sketch as <code>RecursiveReporters</code>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <span class="nav-page">Page 1 of 2</span>
+    <a class="nav-btn" href="recursive-reporters-p2.html">Next Page →</a>
+  </div>
+
+</div>
+</body>
+</html>
