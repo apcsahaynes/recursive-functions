@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursive Methods — Page 2</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+    :root {
+      --bg: #fafaf8;
+      --text: #1a1a1a;
+      --muted: #555;
+      --border: #ddd;
+      --green-bg: #f0f7f0;
+      --green-border: #4a9e4a;
+      --yellow-bg: #fffbea;
+      --yellow-border: #d4a017;
+      --blue-bg: #f0f4ff;
+      --blue-border: #4a6fa5;
+      --code-bg: #f4f4f0;
+      --accent: #2d6a2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      padding: 0 1rem;
+    }
+
+    .page {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 0 2rem;
+    }
+
+    .lab-header {
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .lab-header .breadcrumb {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .lab-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .lab-header .page-indicator {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .intro-box {
+      background: var(--green-bg);
+      border-left: 4px solid var(--green-border);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    p { margin-bottom: 1rem; }
+
+    .exercises { margin: 1.5rem 0; }
+
+    .exercise {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      align-items: flex-start;
+    }
+
+    .exercise-num {
+      font-family: 'Source Code Pro', monospace;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 1.5rem;
+      padding-top: 0.1rem;
+    }
+
+    .exercise-body { flex: 1; }
+    .exercise-body p:last-child { margin-bottom: 0; }
+
+    pre {
+      margin: 0.8rem 0;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      border: 1px solid var(--border);
+    }
+
+    pre code { font-family: 'Source Code Pro', monospace !important; }
+
+    code {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.1em 0.3em;
+      border-radius: 2px;
+    }
+
+    pre code {
+      background: none !important;
+      padding: 0 !important;
+    }
+
+    .not-possible {
+      border: 2px solid #c0392b;
+      border-radius: 4px;
+      padding: 0 0.5rem 0.5rem;
+      margin: 1rem 0;
+      background: #fff8f8;
+    }
+
+    .not-possible-label {
+      display: block;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #c0392b;
+      letter-spacing: 0.06em;
+      padding: 0.5rem 0.5rem 0.3rem;
+    }
+
+    .not-possible pre {
+      border: none;
+      margin: 0;
+      background: #fff8f8;
+    }
+
+    .callout {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue-border);
+      padding: 0.9rem 1.2rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .useful {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.9rem 1.2rem;
+      margin: 0.8rem 0;
+      font-size: 0.88rem;
+    }
+
+    .useful .label {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 0.4rem;
+    }
+
+    .useful p {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .useful p:last-child { margin-bottom: 0; }
+
+    details {
+      margin: 0.8rem 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    summary {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      user-select: none;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶ '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼ '; }
+    details[open] { border-color: var(--green-border); }
+
+    .hint-body {
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.93rem;
+    }
+
+    .partner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #e8f0e8;
+      border: 1px solid var(--green-border);
+      border-radius: 20px;
+      padding: 0.15rem 0.7rem 0.15rem 0.5rem;
+      font-size: 0.82rem;
+      font-family: 'Source Code Pro', monospace;
+      color: var(--accent);
+      font-weight: 600;
+      margin-right: 0.3rem;
+      vertical-align: middle;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-page {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .nav-btn {
+      display: inline-block;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: white;
+      background: var(--accent);
+      padding: 0.5rem 1.2rem;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <div class="breadcrumb">AP CS A &mdash; Recursion</div>
+    <h1>Recursive Methods That Return Values</h1>
+    <div class="page-indicator">Page 2 of 2 &mdash; Writing Recursive Methods</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>On this page,</strong> you'll write a recursive <code>factorial</code> method and several recursive methods that handle strings.</p>
+  </div>
+
+  <p>The factorial function, <em>n</em>!, is defined to be the product of the integers from 1 to <em>n</em>. Say 9! as "nine factorial", not <em>NINE!</em></p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p>The value of 9! is 362,880. Find the value of 10!.</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p>Describe the relationship between 37! and 36!.</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p>Use these ideas to write a <code>factorial</code> method using recursion. Don't forget: <em>base cases are important!</em></p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">The relationship between 37! and 36! is the same as the relationship between <em>n</em>! and (<em>n</em>&minus;1)!. Write that as: <code>return n * factorial(n - 1);</code>. What's the smallest input where you know the answer without calculating?</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p>Morgan's loop built up a power of 2. Let's write that as its own recursive method.</p>
+        <p>Write a recursive method <code>power</code> that takes a base and an exponent and returns the result. <code>power(2, 8)</code> should return 256.</p>
+        <p>Think about the relationship between <code>power(2, 8)</code> and <code>power(2, 7)</code> the same way you thought about the relationship between 37! and 36!.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">Notice that the base never changes — only the exponent gets smaller. <code>power(2, 8)</code> is just <code>2 * power(2, 7)</code>. What's the base case — when do you know the answer without calculating?</div>
+        </details>
+        <p>Then look back at Jasmine's <code>segmentsInTree</code>. Can you rewrite it using your new <code>power</code> method?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p>Recursive <em>void</em> methods often have structure like this, with multiple statements in the recursive case:</p>
+
+  <pre><code class="language-java">void recursion(int input) {
+  if (/* base case */) {
+    // do something simple
+  } else {
+    // do stuff
+    recursion(smallerInput);
+    // do more stuff
+  }
+}</code></pre>
+
+  <p>Recursive methods that return values have a different structure because they can return only one value. You'll need to build the answer before or inside the <code>return</code> statement.</p>
+
+  <div class="not-possible">
+    <span class="not-possible-label">✗ &nbsp; NOT POSSIBLE — code after return is never reached</span>
+    <pre><code class="language-java">int recursiveMethod(int input) {
+  if (/* base case */) {
+    return somethingSimple;
+  } else {
+    return something;                     // method ends here
+    return recursiveMethod(smallerInput); // never reached
+    return something;                     // never reached
+  }
+}</code></pre>
+  </div>
+
+  <div class="callout">
+    The answer must be built <em>inside</em> the return statement, like Jasmine's: <code>return 1 + 2 * segmentsInTree(n - 1);</code>
+  </div>
+
+  <p>Word processing programs count the number of words and letters in documents. One way to count the number of letters in a phrase is to use a recursive method.</p>
+
+  <p>The key pattern for string recursion: <strong>isolate the first character, do something with it, then recurse on the rest of the string.</strong></p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p>The phrase <strong>"in the course of human events"</strong> has 24 letters. How many letters are there in the phrase <strong>"When in the course of human events"</strong>?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">6.</div>
+      <div class="exercise-body">
+        <p>Recursion always needs a base case to stop the method from calling itself forever. What sort of base case might we use for this situation?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">7.</div>
+      <div class="exercise-body">
+        <p>Write a <code>letterCount</code> method that takes a <code>String</code> as input and returns the total number of letters, not counting spaces. It should return 28 for <code>"We the people of the United States"</code>.</p>
+
+        <div class="useful">
+          <p class="label">Useful String methods:</p>
+          <p><code>str.length()</code> &mdash; number of characters</p>
+          <p><code>str.substring(0, 1)</code> &mdash; first character as a String</p>
+          <p><code>str.substring(1)</code> &mdash; everything after the first character</p>
+          <p><code>str.equals(" ")</code> &mdash; check if a String is a space</p>
+        </div>
+
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">Each recursive call isolates the first character: <code>str.substring(0, 1)</code>. Is it a space? If not, count it. Then recurse on <code>str.substring(1)</code>. What's the base case — when is the string simple enough to answer immediately?</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">8.</div>
+      <div class="exercise-body">
+        <p>Write a <code>joinWords</code> method. It takes a <code>String[]</code> and an index, and returns all the words joined together with spaces:</p>
+        <pre><code class="language-java">String[] words = {"We", "the", "people", "of", "the", "United", "States"};
+println(joinWords(words, 0));
+// → "We the people of the United States"</code></pre>
+
+        <p>Same pattern: isolate the first element (<code>words[index]</code>), combine it with the recursive call on the rest (<code>joinWords(words, index + 1)</code>).</p>
+
+        <div class="useful">
+          <p class="label">Useful:</p>
+          <p><code>words.length</code> &mdash; number of words in the array</p>
+          <p><code>words[index]</code> &mdash; word at position index</p>
+        </div>
+
+        <details>
+          <summary>Hint: what's the base case?</summary>
+          <div class="hint-body">When <code>index</code> reaches the last word (<code>words.length - 1</code>), just return that word — nothing left to combine with. Or when <code>index == words.length</code>, return an empty string <code>""</code>.</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">9.</div>
+      <div class="exercise-body">
+        <p>Here's a <code>reverseString</code> method. Read it carefully, then answer the questions below.</p>
+
+        <pre><code class="language-java">String reverseString(String str) {
+  if (str.length() == 0) return "";
+  return reverseString(str.substring(1)) + str.substring(0, 1);
+}</code></pre>
+
+        <p>Before running it, predict what each of these returns:</p>
+        <ul style="margin: 0.5rem 0 0.8rem 1.5rem; font-family: 'Source Code Pro', monospace; font-size: 0.88rem; line-height: 2;">
+          <li>reverseString("hello")</li>
+          <li>reverseString("a")</li>
+          <li>reverseString("")</li>
+        </ul>
+
+        <p>Then run it and check your predictions.</p>
+
+        <p><span class="partner">👥 Talk with your partner</span> This method uses the same peeling pattern as <code>letterCount</code> and <code>joinWords</code> — but something is different about how it combines the pieces. What is it, and why does that produce a reversed string?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <a class="nav-btn back" href="recursive-reporters-p1.html">← Back</a>
+    <span class="nav-page">Page 2 of 2</span>
+  </div>
+
+</div>
+</body>
+</html>
