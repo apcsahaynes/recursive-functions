@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recursive Functions — Page 2</title>
+  <title>Recursive Methods — Page 2</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
@@ -262,11 +262,13 @@
 <div class="page">
 
   <div class="lab-header">
+    <div class="breadcrumb">AP CS A &mdash; Recursion</div>
+    <h1>Recursive Functions That Return Values</h1>
     <div class="page-indicator">Page 2 of 2 &mdash; Writing Recursive Functions</div>
   </div>
 
   <div class="intro-box">
-    <p><strong>On this page,</strong> you'll write a recursive <code>factorial</code> method and several recursive methods that handle strings.</p>
+    <p><strong>On this page,</strong> you'll write a recursive <code>factorial</code> function and several recursive functions that handle strings.</p>
   </div>
 
   <p>The factorial function, <em>n</em>!, is defined to be the product of the integers from 1 to <em>n</em>. Say 9! as "nine factorial", not <em>NINE!</em></p>
@@ -301,14 +303,11 @@
     <div class="exercise">
       <div class="exercise-num">4.</div>
       <div class="exercise-body">
-        <p>Morgan's loop built up a power of 2. Let's write that as its own recursive method.</p>
-        <p>Write a recursive method <code>power</code> that takes a base and an exponent and returns the result. <code>power(2, 8)</code> should return 256.</p>
-        <p>Think about the relationship between <code>power(2, 8)</code> and <code>power(2, 7)</code> the same way you thought about the relationship between 37! and 36!.</p>
+        <p>Use these ideas to write a general <code>power</code> method that takes a base and an exponent and returns the result. <code>power(2, 8)</code> should return 256. Don't forget: <em>base cases are important!</em></p>
         <details>
           <summary>Hint</summary>
-          <div class="hint-body">Notice that the base never changes — only the exponent gets smaller. <code>power(2, 8)</code> is just <code>2 * power(2, 7)</code>. What's the base case — when do you know the answer without calculating?</div>
+          <div class="hint-body">Notice that the base never changes — only the exponent gets smaller. <code>power(2, 8)</code> is just <code>base * power(base, exp - 1)</code>. What's the base case?</div>
         </details>
-        <p>Then look back at Jasmine's <code>segmentsInTree</code>. Can you rewrite it using your new <code>power</code> method?</p>
       </div>
     </div>
 
@@ -341,13 +340,7 @@
 }</code></pre>
   </div>
 
-  <div class="callout">
-    The answer must be built <em>inside</em> the return statement, like Jasmine's: <code>return 1 + 2 * segmentsInTree(n - 1);</code>
-  </div>
-
   <p>Word processing programs count the number of words and letters in documents. One way to count the number of letters in a phrase is to use a recursive method.</p>
-
-  <p>The key pattern for string recursion: <strong>isolate the first character, do something with it, then recurse on the rest of the string.</strong></p>
 
   <div class="exercises">
 
@@ -393,8 +386,6 @@
 println(joinWords(words, 0));
 // → "We the people of the United States"</code></pre>
 
-        <p>Same pattern: isolate the first element (<code>words[index]</code>), combine it with the recursive call on the rest (<code>joinWords(words, index + 1)</code>).</p>
-
         <div class="useful">
           <p class="label">Useful:</p>
           <p><code>words.length</code> &mdash; number of words in the array</p>
@@ -411,23 +402,11 @@ println(joinWords(words, 0));
     <div class="exercise">
       <div class="exercise-num">9.</div>
       <div class="exercise-body">
-        <p>Here's a <code>reverseString</code> method. Read it carefully, then answer the questions below.</p>
-
+        <p>Build this <code>reverseString</code> function, then describe how it works.</p>
         <pre><code class="language-java">String reverseString(String str) {
   if (str.length() == 0) return "";
   return reverseString(str.substring(1)) + str.substring(0, 1);
 }</code></pre>
-
-        <p>Before running it, predict what each of these returns:</p>
-        <ul style="margin: 0.5rem 0 0.8rem 1.5rem; font-family: 'Source Code Pro', monospace; font-size: 0.88rem; line-height: 2;">
-          <li>reverseString("hello")</li>
-          <li>reverseString("a")</li>
-          <li>reverseString("")</li>
-        </ul>
-
-        <p>Then run it and check your predictions.</p>
-
-        <p><span class="partner">👥 Talk with your partner</span> This method uses the same peeling pattern as <code>letterCount</code> and <code>joinWords</code> — but something is different about how it combines the pieces. What is it, and why does that produce a reversed string?</p>
       </div>
     </div>
 
